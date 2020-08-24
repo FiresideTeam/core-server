@@ -8,8 +8,9 @@ module.exports = function (app) {
   app.on('connection', connection => {
     // On a new real-time connection, add it to the anonymous channel
     app.channel('anonymous').join(connection)
-    console.log(connection.headers.cookie, 'joined')
-    console.log(app.channel('anonymous').connections.cookie)
+    const time = new Date().getTime()
+    console.log(`${time} -- ${connection.ip} joined`)
+
 
   })
 
@@ -19,8 +20,11 @@ module.exports = function (app) {
     if (connection) {
       // Obtain the logged in user from the connection
 
-      const user = connection.user
 
+      const user = connection.user
+      const time = new Date().getTime()
+      //log user and time
+      console.log(`${time} -- User ${user.firstname} with id ${user.id} joined.`)
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection)
 
@@ -39,7 +43,11 @@ module.exports = function (app) {
       //get user (tbh not sure if this will work on logout or if connection will still have the user but also might not matter
       //tbh if it doesnt just shut down the connection client side on logout and start a new one
       //disconnecting auto leaves all channels
+      //get time
+      const time = new Date().getTime()
       const {user} = connection
+      //log logout
+      console.log(`${time} -- User ${user.name} with id ${user.id} left`)
       //join anonymous channel
       app.channel('anonymous').join(connection)
       //leave authed channel
