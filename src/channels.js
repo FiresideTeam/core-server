@@ -9,7 +9,7 @@ module.exports = function (app) {
     // On a new real-time connection, add it to the anonymous channel
     app.channel('anonymous').join(connection)
     const time = new Date().toLocaleTimeString()
-    console.log(`${time} -- ${connection.handshake.address.address} joined`)
+    console.log(`${time} -- ${connection.handshake.address} joined`)
 
 
 
