@@ -42,9 +42,8 @@ exports.Rooms = class Rooms {
       //"a nested for loop? that seems kinda clunky!" i hear you exclaim. i agree.
       self.app.channel('authenticated').connections.forEach(function (connection){
         if(connection.user.id === user){
-          //why isn't the ${roomId} changing color to indicate variable interpolation like it usually does? idk bro but im p sure its working
-          //also maybe i should make a custom service for joining and leaving channels, seems like it would be good practice, prolly wont tho
-         self.app.channel('rooms/${roomId}').join(connection);
+          //maybe i should make a custom service for joining and leaving channels, seems like it would be good practice, prolly wont tho
+         self.app.channel(`rooms/${roomId}`).join(connection);
         }
       })
     });
@@ -68,9 +67,9 @@ exports.Rooms = class Rooms {
     await users.update({'rooms': Sequelize.fn('array_remove', Sequelize.col('rooms'), roomId)},
       {'where': {'id': user}});
     //if user is connected to the rooms/roomId channel remove them
-    self.app.channel('rooms/${roomId}').connections.forEach(function (connection){
+    self.app.channel(`rooms/${roomId}`).connections.forEach(function (connection){
       if(connection.user.id === user){
-        self.app.channel('room/${roomId}').leave(connection);
+        self.app.channel(`room/${roomId}`).leave(connection);
       }
     });
 
@@ -99,7 +98,7 @@ exports.Rooms = class Rooms {
     //if user to be added is authed add them to  the channel
     this.app.channel('authentication').connections.forEach( function (connection) {
       if(connection.user.id === user){
-        self.app.channel('rooms/${roomsId}').join(connection);
+        self.app.channel(`rooms/${roomsId}`).join(connection);
       }
     })
   return id;}
