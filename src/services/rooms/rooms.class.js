@@ -65,7 +65,7 @@ exports.Rooms = class Rooms {
     //get user to be removed
     const {user} = params;
     //remove roomId from users "rooms" array (ide says i need an await here but i dont think i do)
-    users.update({'rooms': Sequelize.fn('array_remove', Sequelize.col('rooms'), roomId)},
+    await users.update({'rooms': Sequelize.fn('array_remove', Sequelize.col('rooms'), roomId)},
       {'where': {'id': user}});
     //if user is connected to the rooms/roomId channel remove them
     self.app.channel('rooms/${roomId}').connections.forEach(function (connection){
@@ -74,7 +74,7 @@ exports.Rooms = class Rooms {
       }
     });
 
-    return { id };
+    return id;
   }
 
   //yo fuck what the docs say these functions are supposed to do.
@@ -93,7 +93,7 @@ exports.Rooms = class Rooms {
     //get user to be added
     const {user} = params;
     //add roomid to users "rooms" list
-    users.update({'rooms': Sequelize.fn('array_append', Sequelize.col('rooms'), roomId)},
+    await users.update({'rooms': Sequelize.fn('array_append', Sequelize.col('rooms'), roomId)},
       {'where': {'id': user}}
     );
     //if user to be added is authed add them to  the channel
@@ -102,5 +102,5 @@ exports.Rooms = class Rooms {
         self.app.channel('rooms/${roomsId}').join(connection);
       }
     })
-  }
+  return id;}
 };
