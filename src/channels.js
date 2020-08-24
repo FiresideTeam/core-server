@@ -57,7 +57,7 @@ module.exports = function (app) {
     return [
       app.channel('admins'),
       app.channel(app.channels).filter(connection =>
-        connection.user._id === context.params.user._id
+        connection.user.id === context.params.user.id
       )
     ];
   });
