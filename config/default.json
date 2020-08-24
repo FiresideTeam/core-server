@@ -28,5 +28,5 @@
       "passwordField": "password"
     }
   },
-  "postgres": "postgres://henry:@localhost:5432/coreserver"
+  "postgres": "postgres://ec2-user:@localhost:5432/coreserver"
 }
